@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import CategoryList from '../Category/CategoryList';
 
 const LeftHome = () => {
     return (
         <div>
-            this is lefthome
+            <h2 className='font-bold'>All categories</h2>
+            <Suspense fallback={<div className='flex justify-center-safe'><span className="loading loading-spinner text-accent  mt-10"></span></div>}>
+                <CategoryList></CategoryList>
+            </Suspense>
         </div>
     );
 };
