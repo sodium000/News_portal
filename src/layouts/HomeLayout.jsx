@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import Header from '../component/header';
 import LeatestNews from '../component/LeatestNews';
+import Navbar from '../component/Navbar';
 
 const HomeLayout = () => {
     return (
@@ -12,6 +13,9 @@ const HomeLayout = () => {
                     <LeatestNews></LeatestNews>
                 </section>
             </header>
+            <nav className='container mx-auto'>
+                <Navbar></Navbar>
+            </nav>
                 <main>
                     <section className='left-nav'></section>
                     <section className='main'>
