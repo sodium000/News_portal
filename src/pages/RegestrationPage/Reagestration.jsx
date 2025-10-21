@@ -1,11 +1,29 @@
 import React, { useState } from 'react';
+import { use } from 'react';
 import { IoIosEye } from "react-icons/io";
 import { IoIosEyeOff } from "react-icons/io";
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import AuthContext from '../../AuthProvider/AuthContext/AuthContext';
 
 const Reagestration = () => {
     const [toggle, settoggle] = useState(false)
+    const { RegWithEmail, setUser } = use(AuthContext)
+    let navigate = useNavigate();
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const Email = e.target.email.value
+        const Password = e.target.password.value
+        RegWithEmail(Email, Password).then((result) => {
+            setUser(result.user)
+            navigate("/auth", { replace: true });
+
+        })
+            .catch((error) => {
+                console.log(error)
+            });
+
+    }
     return (
         <div>
             <div className="min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 relative overflow-hidden">
@@ -32,7 +50,7 @@ const Reagestration = () => {
                             Sign Up
                         </h2>
 
-                        <form className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium mb-1">User Name</label>
                                 <input
@@ -40,6 +58,15 @@ const Reagestration = () => {
                                     name="name"
                                     placeholder="UserName"
                                     className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Image</label>
+                                <input
+                                    type="file"
+                                    name = 'image'
+                                    accept="image/*"
+                                    className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400 pt-2"
                                 />
                             </div>
                             <div>
@@ -76,7 +103,7 @@ const Reagestration = () => {
                                 <p className="text-sm text-white/80">
                                     Already have an account?{" "}
                                     <Link
-                                        to="/login"
+                                        to="/auth"
                                         className="text-pink-300 hover:text-white font-medium underline"
                                     >
                                         Sign in

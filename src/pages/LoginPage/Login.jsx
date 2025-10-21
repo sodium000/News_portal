@@ -1,13 +1,37 @@
 import React, { useState } from 'react';
+import { use } from 'react';
+
 import { IoIosEye, IoIosEyeOff } from 'react-icons/io';
-import { Link} from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
+import AuthContext from '../../AuthProvider/AuthContext/AuthContext';
+
 
 const Login = () => {
     const [toggle, settoggle] = useState(false)
+    let navigate = useNavigate();
 
+    const location = useLocation();
+
+
+
+    const { LogIn } = use(AuthContext);
+
+    const Login = (event) => {
+        event.preventDefault();
+        const Email = event.target.email.value
+        const Password = event.target.password.value
+        LogIn(Email, Password).then(() => {
+            alert("user login");
+            navigate(`${location.state? location.state : "/"}`);
+            
+        })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
 
     return (
-            <>
+        <>
             <div className="min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 relative overflow-hidden">
                 {/* Animated glow orbs */}
                 <div className="absolute inset-0">
@@ -29,7 +53,7 @@ const Login = () => {
 
                     {/* Login card */}
                     <div className="w-full max-w-md backdrop-blur-lg bg-white/10 border border-white/20 shadow-2xl rounded-2xl p-8">
-                        <form className="space-y-5">
+                        <form onSubmit={Login} className="space-y-5">
                             <h2 className="text-2xl font-semibold mb-2 text-center text-white">
                                 Sign In
                             </h2>
@@ -47,7 +71,7 @@ const Login = () => {
                             <div className="relative">
                                 <label className="block text-sm mb-1">Password</label>
                                 <input
-                                    type={toggle ? "text":"password"}
+                                    type={toggle ? "text" : "password"}
                                     name="password"
                                     placeholder="••••••••"
                                     className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -68,7 +92,7 @@ const Login = () => {
 
                             <p className="text-center text-sm text-white/80 mt-3">
                                 Don’t have an account?{" "}
-                                <Link to="/auth/register"
+                                <Link to="/auth/regestration"
                                     className="text-pink-300 hover:text-white underline"
                                 >
                                     Sign up
@@ -78,8 +102,8 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            
-            </>
+
+        </>
     );
 };
 
